@@ -14,21 +14,21 @@ app.use(morgan("tiny"));
 import { dbConnection } from "./src/config/db.js";
 dbConnection();
 
-// middlewares
-import { userAuth } from "./src/middlewares/authMiddleware.js";
+//middleware
+import { useAuth } from "./src/middlewares/authMiddleware.js";
 
 // apis
 import userRouter from "./src/routers/userRouter.js";
 import expensesRouter from "./src/routers/expensesRouter.js";
 app.use("/api/v1/users", userRouter);
-app.use("/api/v1/expenses", userAuth, expensesRouter);
+app.use("/api/v1/expenses", useAuth, expensesRouter);
 
 app.get("*", (req, res) => {
-  res.status(404).send("<h1>404 Not found</h1>");
+	res.status(404).send("<h1>404 Not found</h1>");
 });
 
-app.listen(PORT, (error) => {
-  error && console.log(error);
+app.listen(PORT, error => {
+	error && console.log(error);
 
-  console.log(`Server is running on port ${PORT}`);
+	console.log(`Server is running on port ${PORT}`);
 });
