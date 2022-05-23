@@ -30,3 +30,10 @@ const dashboardSlice = createSlice({
       },
   },
 });
+
+Hosting app including the database
+
+1. connect app to the server hosted database, mongodb at Atlas
+2. Hosting as monolthic app, so we are going to server our react app through node app.
+3. create an account with Heroku
+4. use cli to host your app
