@@ -2,13 +2,21 @@ import React, { useState, useRef } from "react";
 import { Alert, Button, Form, Row, Spinner } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { postLogin } from "../../helpers/axiosHelper";
+import {
+	isLoadingPending,
+	setResponse,
+	loginSuccessResponse,
+} from "../register/userSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 export const Login = () => {
+	const dispatch = useDispatch();
 	const emailRef = useRef("");
 	const passwordRef = useRef("");
-	const [error, setError] = useState("");
-	const [loading, setLoading] = useState(false);
+	// const [error, setError] = useState("");
+	// const [loading, setLoading] = useState(false);
 	const navigate = useNavigate();
+	const { res, isLoading } = useSelector(state => state.user);
 
 	const handleSubmit = async () => {
 		const email = emailRef.current.value;
@@ -17,21 +25,23 @@ export const Login = () => {
 		if (!email || !password) {
 			return alert("Please enter your email and password");
 		}
-		setLoading(true);
+
+		dispatch(isLoadingPending(true));
 		const { data } = await postLogin({ email, password });
-		setLoading(false);
 
 		if (data.status === "success") {
 			const { name, email, _id } = data.user;
+			dispatch(loginSuccessResponse(data.user));
 			// if loging sucess, store user data in sessionStorage and redirect to dashboard page
 			sessionStorage.setItem("user", JSON.stringify({ name, email, _id }));
-			setError("");
+
 			navigate("/dashboard");
 			return;
 		}
 
 		// show error message
-		setError(data.message);
+		// setError(data.message);
+		dispatch(setResponse(data));
 	};
 
 	return (
@@ -40,9 +50,9 @@ export const Login = () => {
 				<h3>Welcome Back </h3>
 				<hr />
 
-				{loading && <Spinner animation="border" variant="primary" />}
+				{isLoading && <Spinner animation="border" variant="primary" />}
 
-				{error && <Alert variant="danger">{error}</Alert>}
+				{res?.message && <Alert variant="danger">{res?.message}</Alert>}
 
 				<Form.Group className="mb-3" controlId="formGroupEmail">
 					<Form.Label>Email address</Form.Label>

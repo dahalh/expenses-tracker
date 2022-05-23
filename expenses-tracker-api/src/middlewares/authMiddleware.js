@@ -5,7 +5,6 @@ export const useAuth = async (req, res, next) => {
 
 		if (authorization) {
 			const user = await getUser(authorization);
-			console.log(user);
 			return user?._id
 				? next()
 				: res.status(403).json({
