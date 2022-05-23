@@ -10,7 +10,7 @@ export const CustomTable = () => {
   const dispatch = useDispatch();
   const { expenses, res } = useSelector((state) => state.dashboard);
   const [ids, setIds] = useState([]);
-  const [display, setDisplay] = useState();
+  const [display, setDisplay] = useState("all");
 
   useEffect(() => {
     dispatch(fetchExpenses());
