@@ -2,6 +2,7 @@ import express from "express";
 import {
 	crateExpense,
 	deleteExpense,
+	deleteManyExpenses,
 	getExpenses,
 } from "../models/expenseModel/Expenses.model.js";
 const router = express.Router();
@@ -50,17 +51,15 @@ router.post("/", async (req, res) => {
 	}
 });
 
-router.delete("/:_id", async (req, res) => {
+router.delete("/", async (req, res) => {
 	try {
-		const { _id } = req.params;
+		const ids = req.body;
+		
 		const { authorization } = req.headers; // is a user id
 
-		const data = await deleteExpense({
-			_id,
-			userId: authorization,
-		});
+		const data = await deleteManyExpenses(authorization, ids);
 
-		data?._id
+		data?.deletedCount
 			? res.json({
 					status: "success",
 					message: "Expense deleted successfully",
