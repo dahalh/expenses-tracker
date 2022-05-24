@@ -11,25 +11,6 @@
 5. Once response is received, check the status and display the feedback message to the user 
 6. Re-fetch all the expenses 
 
-// Slice file
-
-
-const dashboardSlice = createSlice({
-  name: "dashboard",
-  initialState,
-  reducers: {
-      requestPending : (state,)=> {
-          state.isLoading = true,
-      },
-      setResponse : (state, {payload}) => {
-          state.res = payload;
-          state.isLoading = false;
-      },
-      setExpenses: (state, {payload =[]}) => {
-          state.expenses = payload;
-      },
-  },
-});
 
 Hosting app including the database
 
